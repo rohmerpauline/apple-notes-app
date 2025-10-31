@@ -1,14 +1,49 @@
+import { useAuth } from "@/context/AuthContext";
 import { COLORS } from "@/theme/color";
+import { useRouter } from "expo-router";
 import { useState } from "react";
 import { StyleSheet, View } from "react-native";
-import { Button, Text } from "react-native-paper";
+import { Button, Text, useTheme } from "react-native-paper";
 import CustomTextInput, { InputType } from "./components/CustomTextInput";
 import PageHeader from "./components/PageHeader";
 
 const AuthScreen = () => {
+  const { signIn, signUp } = useAuth();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [isSignUp, setIsSignUp] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>("");
+
+  const theme = useTheme();
+  const router = useRouter();
+
+  const handleAuth = async () => {
+    const trimmedEmail = email.trim();
+    const trimmedPassword = password.trim();
+
+    if (!trimmedEmail || !trimmedPassword) {
+      setError("Please fill in all fields.");
+      return;
+    }
+
+    setError(null);
+
+    if (isSignUp) {
+      const error = await signUp(trimmedEmail, trimmedPassword);
+      if (error) {
+        setError(error);
+        return;
+      }
+    } else {
+      const error = await signIn(trimmedEmail, trimmedPassword);
+      if (error) {
+        setError(error);
+        return;
+      }
+    }
+
+    router.replace("/");
+  };
 
   const handleSwitchMode = () => {
     setIsSignUp((prev) => !prev);
@@ -29,7 +64,8 @@ const AuthScreen = () => {
           setValue={setPassword}
         />
       </View>
-      <Button mode="contained" style={styles.button}>
+      {error && <Text style={{ color: theme.colors.error }}>{error}</Text>}
+      <Button mode="contained" style={styles.button} onPress={handleAuth}>
         {isSignUp ? "Sign Up" : "Sign In"}
       </Button>
       <Button
@@ -65,6 +101,7 @@ const styles = StyleSheet.create({
     color: "#666666",
     alignSelf: "flex-start",
     marginHorizontal: "auto",
+    marginTop: 10,
     borderRadius: 10,
   },
   switchModeButton: {
