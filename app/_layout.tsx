@@ -34,10 +34,10 @@ const RootNavigator = () => {
       }}
     >
       <Stack.Protected guard={!!user}>
-        <Stack.Screen name="index" />
+        <Stack.Screen name="(app)" options={{ headerShown: false }} />
       </Stack.Protected>
       <Stack.Protected guard={!user}>
-        <Stack.Screen name="auth" />
+        <Stack.Screen name="auth" options={{ headerTitle: "" }} />
       </Stack.Protected>
     </Stack>
   );

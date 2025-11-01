@@ -4,8 +4,8 @@ import { useRouter } from "expo-router";
 import { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Button, Text, useTheme } from "react-native-paper";
-import CustomTextInput, { InputType } from "./components/CustomTextInput";
-import PageHeader from "./components/PageHeader";
+import CustomTextInput, { InputType } from "./components/ui/CustomTextInput";
+import PageHeader from "./components/ui/PageHeader";
 
 const AuthScreen = () => {
   const { signIn, signUp } = useAuth();
