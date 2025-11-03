@@ -4,19 +4,20 @@ import Footer, { FooterFunctionality } from "./Footer";
 
 interface ScreenWrapperProps {
   children: React.ReactNode;
-  footerActive?: boolean;
+  canScrollFurther?: boolean;
   items: FooterFunctionality[];
+  headerTitle?: string;
 }
 
 const ScreenWrapper = ({
   children,
-  footerActive,
+  canScrollFurther,
   items,
 }: ScreenWrapperProps) => {
   return (
     <View style={styles.container}>
       <View style={styles.content}>{children}</View>
-      <Footer footerActive={footerActive} items={items} />
+      <Footer canScrollFurther={canScrollFurther} items={items} />
     </View>
   );
 };
@@ -30,7 +31,6 @@ const styles = StyleSheet.create({
   content: {
     paddingBottom: FOOTER_HEIGHT,
     paddingHorizontal: 30,
-    paddingTop: 20,
     flexGrow: 1,
   },
 });

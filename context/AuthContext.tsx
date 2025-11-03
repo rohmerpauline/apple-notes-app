@@ -94,11 +94,11 @@ export function AuthProvider({ children }: PropsWithChildren) {
 }
 
 // Use this hook to access the user info.
-export function useAuth() {
+export const useAuth = () => {
   const value = useContext(AuthContext);
   if (!value) {
     throw new Error("useAuth must be wrapped in a <AuthProvider />");
   }
 
   return value;
-}
+};

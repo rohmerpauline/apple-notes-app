@@ -1,6 +1,6 @@
-import { useScrollableFooter } from "@/hook/useScrollableFooter";
-import { useRouter } from "expo-router";
-import { ScrollView } from "react-native";
+import { useScreenHeaderTitle } from "@/hook/useScreenHeaderTitle";
+import { ScrollView, View } from "react-native";
+import { Text } from "react-native-paper";
 import { FooterFunctionalityOptions } from "../components/layout//Footer";
 import ScreenWrapper from "../components/layout/ScreenWrapper";
 import PageHeader from "../components/ui/PageHeader";
@@ -11,13 +11,22 @@ const FOOTER_ITEMS = [
 ];
 
 const HomeScreen = () => {
-  const router = useRouter();
-  const { scrollProps, footerActive } = useScrollableFooter();
+  const { scrollProps, canScrollFurther } = useScreenHeaderTitle("Folders");
+  const items = Array.from({ length: 55 }, (_, i) => i + 1);
 
   return (
-    <ScreenWrapper footerActive={footerActive} items={FOOTER_ITEMS}>
+    <ScreenWrapper
+      canScrollFurther={canScrollFurther}
+      items={FOOTER_ITEMS}
+      headerTitle="Folders"
+    >
       <ScrollView {...scrollProps} showsVerticalScrollIndicator={false}>
         <PageHeader title="Folders" />
+        <View>
+          {items.map((num) => (
+            <Text key={num}>Élément {num}</Text>
+          ))}
+        </View>
       </ScrollView>
     </ScreenWrapper>
   );

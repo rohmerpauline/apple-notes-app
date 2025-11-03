@@ -23,11 +23,11 @@ export type FooterFunctionality =
   | FooterFunctionalityOptions.DRAW;
 
 interface FooterProps {
-  footerActive?: boolean;
+  canScrollFurther?: boolean;
   items: FooterFunctionality[];
 }
 
-const Footer = ({ footerActive = false, items }: FooterProps) => {
+const Footer = ({ canScrollFurther = false, items }: FooterProps) => {
   const footerComponentsMap: Record<string, React.FC> = {
     [FooterFunctionalityOptions.FOLDER]: CreateFolderButton,
     [FooterFunctionalityOptions.CREATE_NOTE]: CreateNewNoteButton,
@@ -37,16 +37,7 @@ const Footer = ({ footerActive = false, items }: FooterProps) => {
   };
 
   return (
-    <View
-      style={[
-        styles.container,
-        {
-          backgroundColor: footerActive ? COLORS.surface : COLORS.background,
-          borderTopWidth: footerActive ? 0.3 : 0,
-          borderTopColor: footerActive ? COLORS.border : "none",
-        },
-      ]}
-    >
+    <View style={[styles.container, canScrollFurther && styles.footerShadow]}>
       {items.map((func) => {
         const Component = footerComponentsMap[func];
         return Component ? <Component key={func} /> : null;
@@ -68,6 +59,11 @@ const styles = StyleSheet.create({
     height: FOOTER_HEIGHT,
     paddingHorizontal: 30,
     paddingTop: 10,
+  },
+  footerShadow: {
+    backgroundColor: COLORS.surface,
+    borderTopColor: COLORS.border,
+    borderTopWidth: StyleSheet.hairlineWidth,
   },
   addFolderIcon: {
     position: "relative",

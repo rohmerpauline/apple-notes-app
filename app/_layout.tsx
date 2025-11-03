@@ -1,4 +1,5 @@
 import { AuthProvider, useAuth } from "@/context/AuthContext";
+import { HeaderTitleProvider } from "@/context/HeaderTitleContext";
 import { COLORS } from "@/theme/color";
 import { Stack } from "expo-router";
 import { PaperProvider } from "react-native-paper";
@@ -8,12 +9,14 @@ import { SplashScreenController } from "../splash";
 const Root = () => {
   return (
     <AuthProvider>
-      <PaperProvider>
-        <SafeAreaProvider>
-          <SplashScreenController />
-          <RootNavigator />
-        </SafeAreaProvider>
-      </PaperProvider>
+      <HeaderTitleProvider>
+        <PaperProvider>
+          <SafeAreaProvider>
+            <SplashScreenController />
+            <RootNavigator />
+          </SafeAreaProvider>
+        </PaperProvider>
+      </HeaderTitleProvider>
     </AuthProvider>
   );
 };
