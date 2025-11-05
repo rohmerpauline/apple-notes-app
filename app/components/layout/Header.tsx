@@ -18,9 +18,11 @@ const Header = ({
 }: HeaderProps) => {
   return (
     <View style={[styles.container, showShadow && styles.headerShadow]}>
-      <View style={styles.side}>{leftComponent}</View>
-      <Text style={styles.centerTitle}>{title}</Text>
-      <View style={styles.side}>{rightComponent}</View>
+      <View style={styles.left}>{leftComponent}</View>
+      <View style={styles.center}>
+        <Text style={styles.centerTitle}>{title}</Text>
+      </View>
+      <View style={styles.right}>{rightComponent}</View>
     </View>
   );
 };
@@ -31,8 +33,7 @@ const styles = StyleSheet.create({
   container: {
     height: HEADER_HEIGHT,
     paddingTop: HEADER_PADDING_TOP,
-    flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "center",
     alignItems: "center",
   },
   headerShadow: {
@@ -40,14 +41,30 @@ const styles = StyleSheet.create({
     borderBottomColor: COLORS.border,
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
-  side: {
+  left: {
+    position: "absolute",
+    left: 20,
+    top: HEADER_PADDING_TOP,
+    bottom: 0,
+    justifyContent: "center",
+  },
+  right: {
+    position: "absolute",
+    right: 20,
+    top: HEADER_PADDING_TOP,
+    bottom: 0,
+    justifyContent: "center",
+  },
+  center: {
     flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
   },
   centerTitle: {
     fontSize: 17,
     fontWeight: "bold",
     color: "black",
-    flex: 1,
     textAlign: "center",
   },
 });

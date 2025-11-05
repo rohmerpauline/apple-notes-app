@@ -1,3 +1,5 @@
+import 'react-native-reanimated';
+
 import { AuthProvider, useAuth } from "@/context/AuthContext";
 import { HeaderTitleProvider } from "@/context/HeaderTitleContext";
 import { COLORS } from "@/theme/color";

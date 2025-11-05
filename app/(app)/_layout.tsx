@@ -1,6 +1,7 @@
 import { useHeaderTitle } from "@/context/HeaderTitleContext";
 import { COLORS } from "@/theme/color";
 import { Stack } from "expo-router";
+import ModifyButton from "../components/Home/ModifyButton";
 import Header from "../components/layout/Header";
 import NewNoteHeaderLeft from "../components/NewNote/NewNoteHeaderLeft";
 
@@ -24,7 +25,11 @@ export default function AppLayout() {
         options={{
           title: headerTitle,
           header: () => (
-            <Header title={headerTitle} showShadow={headerShadowVisible} />
+            <Header
+              title={headerTitle}
+              showShadow={headerShadowVisible}
+              rightComponent={<ModifyButton />}
+            />
           ),
         }}
       />

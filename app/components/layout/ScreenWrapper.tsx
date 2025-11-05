@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
   },
   content: {
     paddingBottom: FOOTER_HEIGHT,
-    paddingHorizontal: 30,
+    paddingHorizontal: 20,
     flexGrow: 1,
   },
 });
