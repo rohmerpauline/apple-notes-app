@@ -71,11 +71,7 @@ const HomeScreen = () => {
         renderItem={({ item }) => <FolderGroup folders={item.folders} />}
         keyExtractor={(item, idx) => item.folders[idx].id}
         showsVerticalScrollIndicator={false}
-        ListHeaderComponent={
-          <>
-            <PageHeader title="Folders" />
-          </>
-        }
+        ListHeaderComponent={<PageHeader title="Folders" />}
       />
     </ScreenWrapper>
   );

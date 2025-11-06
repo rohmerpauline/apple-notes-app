@@ -1,4 +1,4 @@
-import { useHeaderTitle } from "@/context/HeaderTitleContext";
+import { useBoundStore } from "@/store/useBoundStore";
 import { COLORS } from "@/theme/color";
 import { Stack } from "expo-router";
 import ModifyButton from "../components/Home/ModifyButton";
@@ -6,7 +6,8 @@ import Header from "../components/layout/Header";
 import NewNoteHeaderLeft from "../components/NewNote/NewNoteHeaderLeft";
 
 export default function AppLayout() {
-  const { title, titleVisible } = useHeaderTitle();
+  const title = useBoundStore((state) => state.title);
+  const titleVisible = useBoundStore((state) => state.titleVisible);
 
   const headerTitle = titleVisible ? title : "";
   const headerShadowVisible = titleVisible ? true : false;

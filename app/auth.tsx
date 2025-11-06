@@ -1,4 +1,4 @@
-import { useAuth } from "@/context/AuthContext";
+import { useBoundStore } from "@/store/useBoundStore";
 import { COLORS } from "@/theme/color";
 import { useRouter } from "expo-router";
 import { useState } from "react";
@@ -8,7 +8,8 @@ import CustomTextInput, { InputType } from "./components/ui/CustomTextInput";
 import PageHeader from "./components/ui/PageHeader";
 
 const AuthScreen = () => {
-  const { signIn, signUp } = useAuth();
+  const signIn = useBoundStore((state) => state.signIn);
+  const signUp = useBoundStore((state) => state.signUp);
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [isSignUp, setIsSignUp] = useState<boolean>(true);

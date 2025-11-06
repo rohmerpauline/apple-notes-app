@@ -1,30 +1,33 @@
-import 'react-native-reanimated';
-
-import { AuthProvider, useAuth } from "@/context/AuthContext";
-import { HeaderTitleProvider } from "@/context/HeaderTitleContext";
+import { useBoundStore } from "@/store/useBoundStore";
 import { COLORS } from "@/theme/color";
-import { Stack } from "expo-router";
+import { SplashScreen, Stack } from "expo-router";
+import { useEffect } from "react";
 import { PaperProvider } from "react-native-paper";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { SplashScreenController } from "../splash";
 
 const Root = () => {
   return (
-    <AuthProvider>
-      <HeaderTitleProvider>
-        <PaperProvider>
-          <SafeAreaProvider>
-            <SplashScreenController />
-            <RootNavigator />
-          </SafeAreaProvider>
-        </PaperProvider>
-      </HeaderTitleProvider>
-    </AuthProvider>
+    <PaperProvider>
+      <SafeAreaProvider>
+        <SplashScreenController />
+        <RootNavigator />
+      </SafeAreaProvider>
+    </PaperProvider>
   );
 };
 
 const RootNavigator = () => {
-  const { user, isLoadingUser } = useAuth();
+  const user = useBoundStore((state) => state.user);
+  const isLoadingUser = useBoundStore((state) => state.isLoadingUser);
+
+  useEffect(() => {
+    SplashScreen.preventAutoHideAsync();
+  }, []);
+
+  useEffect(() => {
+    useBoundStore.getState().getUser();
+  }, []);
 
   if (isLoadingUser) {
     return null;
