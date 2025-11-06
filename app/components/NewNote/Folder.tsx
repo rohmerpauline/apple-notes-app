@@ -1,6 +1,11 @@
+import { useBoundStore } from "@/store/useBoundStore";
 import { COLORS } from "@/theme/color";
 import { FolderTable, RECENTLY_DELETED_FOLDER_ID } from "@/types/database.type";
-import { FontAwesome6, Ionicons } from "@expo/vector-icons";
+import {
+  FontAwesome6,
+  Ionicons,
+  MaterialCommunityIcons,
+} from "@expo/vector-icons";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
 interface FolderProps {
@@ -8,6 +13,15 @@ interface FolderProps {
 }
 
 const Folder = ({ folder }: FolderProps) => {
+  const isModifying = useBoundStore((state) => state.isModifying);
+
+  const isFolderModifiable = folder.is_modifiable;
+  const isDisabled = isModifying && !isFolderModifiable;
+
+  const textColor = isDisabled ? COLORS.border : COLORS.text;
+  const iconColor = isDisabled ? COLORS.border : COLORS.accent;
+  const textOpacity = isDisabled ? 0.6 : 1;
+
   const folderIcon =
     folder.id === RECENTLY_DELETED_FOLDER_ID ? (
       <Ionicons name="chevron-forward" size={20} color={COLORS.border} />
@@ -17,13 +31,40 @@ const Folder = ({ folder }: FolderProps) => {
 
   return (
     <Pressable style={styles.container}>
-      <FontAwesome6 name="folder-closed" size={22} color={COLORS.accent} />
+      <FontAwesome6 name="folder-closed" size={22} color={iconColor} />
       <View style={styles.folderContent}>
-        <Text style={styles.folderName}>{folder.title}</Text>
-        <View style={styles.rightSide}>
-          <Text style={styles.numberOfNotes}>{folder.noteCount}</Text>
-          {folderIcon}
-        </View>
+        <Text
+          style={[
+            styles.folderName,
+            {
+              color: textColor,
+              opacity: textOpacity,
+            },
+          ]}
+        >
+          {folder.title}
+        </Text>
+        {isModifying ? (
+          isFolderModifiable && (
+            <View style={styles.modifyContainer}>
+              <View style={[styles.iconWrapper, styles.dotsIcon]}>
+                <MaterialCommunityIcons
+                  name="dots-horizontal-circle-outline"
+                  size={24}
+                  color={COLORS.accent}
+                />
+              </View>
+              <View style={styles.iconWrapper}>
+                <Ionicons name="menu-outline" size={24} color="#cdcbcbff" />
+              </View>
+            </View>
+          )
+        ) : (
+          <View style={styles.rightSide}>
+            <Text style={styles.numberOfNotes}>{folder.noteCount}</Text>
+            {folderIcon}
+          </View>
+        )}
       </View>
     </Pressable>
   );
@@ -38,26 +79,41 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
   },
   folderContent: {
+    flex: 1,
     flexDirection: "row",
-    alignItems: "center",
     justifyContent: "space-between",
+    alignItems: "stretch",
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: "#cdcbcbff",
-    paddingVertical: 13,
-    paddingRight: 15,
-    flex: 1,
     marginLeft: 15,
+    paddingRight: 15,
   },
   folderName: {
+    flexShrink: 1,
     fontSize: 18,
+    paddingVertical: 13,
   },
   rightSide: {
     flexDirection: "row",
     alignItems: "center",
+    paddingVertical: 13,
+  },
+  modifyContainer: {
+    flexDirection: "row",
+    alignItems: "stretch",
+  },
+  iconWrapper: {
+    justifyContent: "center",
+    paddingHorizontal: 5,
+    alignSelf: "stretch",
+  },
+  dotsIcon: {
+    borderRightWidth: StyleSheet.hairlineWidth,
+    borderRightColor: "#cdcbcbff",
   },
   numberOfNotes: {
     fontSize: 18,
     color: COLORS.border,
-    marginRight: 5,
+    marginRight: 6,
   },
 });

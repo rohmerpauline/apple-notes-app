@@ -1,13 +1,14 @@
+import { useBoundStore } from "@/store/useBoundStore";
 import { COLORS } from "@/theme/color";
-import { useState } from "react";
 import { Pressable, StyleSheet } from "react-native";
 import { Text } from "react-native-paper";
 
 const ModifyButton = () => {
-  const [isModifying, setIsModifying] = useState<boolean>(false);
+  const isModifying = useBoundStore((state) => state.isModifying);
+  const setIsModifying = useBoundStore((state) => state.setIsModifying);
 
   const handleClick = () => {
-    setIsModifying((prev) => !prev);
+    setIsModifying(!isModifying);
   };
 
   const buttonLabel = isModifying ? "OK" : "Modify";
