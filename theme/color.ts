@@ -5,4 +5,5 @@ export const COLORS = {
   primary: "#FFF",
   accent: "#EAC040",
   text: "#000",
+  lightGrey: "#cdcbcbff",
 };

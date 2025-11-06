@@ -18,9 +18,9 @@ const Folder = ({ folder }: FolderProps) => {
   const isFolderModifiable = folder.is_modifiable;
   const isDisabled = isModifying && !isFolderModifiable;
 
-  const textColor = isDisabled ? COLORS.border : COLORS.text;
-  const iconColor = isDisabled ? COLORS.border : COLORS.accent;
-  const textOpacity = isDisabled ? 0.6 : 1;
+  const textColor = isDisabled ? COLORS.lightGrey : COLORS.text;
+  const iconColor = isDisabled ? COLORS.lightGrey : COLORS.accent;
+  const textOpacity = isDisabled ? 0.8 : 1;
 
   const folderIcon =
     folder.id === RECENTLY_DELETED_FOLDER_ID ? (
@@ -55,7 +55,11 @@ const Folder = ({ folder }: FolderProps) => {
                 />
               </View>
               <View style={styles.iconWrapper}>
-                <Ionicons name="menu-outline" size={24} color="#cdcbcbff" />
+                <Ionicons
+                  name="menu-outline"
+                  size={24}
+                  color={COLORS.lightGrey}
+                />
               </View>
             </View>
           )
@@ -84,7 +88,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "stretch",
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: "#cdcbcbff",
+    borderBottomColor: COLORS.lightGrey,
     marginLeft: 15,
     paddingRight: 15,
   },
@@ -109,7 +113,7 @@ const styles = StyleSheet.create({
   },
   dotsIcon: {
     borderRightWidth: StyleSheet.hairlineWidth,
-    borderRightColor: "#cdcbcbff",
+    borderRightColor: COLORS.lightGrey,
   },
   numberOfNotes: {
     fontSize: 18,
