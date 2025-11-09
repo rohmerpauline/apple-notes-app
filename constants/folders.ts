@@ -8,3 +8,5 @@ export const RECENTLY_DELETED_TITLE = "Recently deleted";
 
 export const DEFAULT_FOLDER_TYPE = "default";
 export const USER_FOLDER_TYPE = "user";
+
+export const NEW_FOLDER_NAME = "New folder";

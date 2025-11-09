@@ -37,6 +37,8 @@ interface TextInputProps {
   autoComplete?: RNTextInputProps["autoComplete"];
   /*If true, the input text will be masked (e.g., for passwords, PINs, or other sensitive fields). Default is false except for PASSWORD type.*/
   secureTextEntry?: boolean;
+  /*If true, the value can be reset to its initial state.*/
+  resettable?: boolean;
 }
 
 const CustomTextInput = ({
@@ -46,6 +48,7 @@ const CustomTextInput = ({
   setValue,
   autoComplete,
   secureTextEntry,
+  resettable = false,
 }: TextInputProps) => {
   const [inputVisible, setInputVisible] = useState<boolean>(false);
 
@@ -86,6 +89,19 @@ const CustomTextInput = ({
             name={visibilityIconName}
             size={25}
             color={COLORS.accent}
+          />
+        </Pressable>
+      )}
+      {resettable && (
+        <Pressable
+          onPress={() => setValue("")}
+          hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+          accessibilityRole="button"
+        >
+          <MaterialCommunityIcons
+            name="close-circle"
+            size={22}
+            color={COLORS.lightGrey}
           />
         </Pressable>
       )}

@@ -1,3 +1,8 @@
+import {
+  ALL_NOTES_FOLDER_ID,
+  RECENTLY_DELETED_FOLDER_ID,
+  UNASSIGNED_NOTES_FOLDER_ID,
+} from "@/constants/folders";
 import { FolderTable } from "@/types/database.type";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ID, Query } from "react-native-appwrite";
@@ -17,7 +22,21 @@ export const useFolders = (userId: string) => {
         tableId: FOLDERS_TABLE_ID,
         queries: [Query.equal("user_id", userId ?? "")],
       });
-      return result.rows as FolderTable[];
+
+      const folders = result.rows as FolderTable[];
+
+      const getPriority = (id: string) => {
+        if (id === ALL_NOTES_FOLDER_ID) return 0;
+        if (id === UNASSIGNED_NOTES_FOLDER_ID) return 1;
+        if (id === RECENTLY_DELETED_FOLDER_ID) return 3;
+        return 2;
+      };
+
+      const sortedFolders = folders.sort(
+        (a, b) => getPriority(a.$id) - getPriority(b.$id),
+      );
+
+      return sortedFolders as FolderTable[];
     },
   });
 };

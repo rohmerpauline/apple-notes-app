@@ -1,5 +1,6 @@
 import { create, StoreApi } from "zustand";
 import { AuthState, createAuthSlice } from "./authSlice";
+import { createFolderSlice, FolderState } from "./folderSlice";
 import { createHeaderTitleSlice, HeaderTitleState } from "./headerTitleSlice";
 import {
   createModifyButtonSlice,
@@ -15,10 +16,12 @@ type SliceArgs<S> = [
 export interface AppState
   extends HeaderTitleState,
     AuthState,
-    ModifyButtonState {}
+    ModifyButtonState,
+    FolderState {}
 
 export const useBoundStore = create<AppState>((...a: SliceArgs<AppState>) => ({
   ...createHeaderTitleSlice(...a),
   ...createAuthSlice(...a),
   ...createModifyButtonSlice(...a),
+  ...createFolderSlice(...a),
 }));

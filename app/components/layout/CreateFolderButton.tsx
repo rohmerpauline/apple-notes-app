@@ -1,10 +1,16 @@
 import { COLORS } from "@/theme/color";
 import { Entypo, FontAwesome, Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 import { Pressable, StyleSheet } from "react-native";
 
 const CreateFolderButton = () => {
+  const router = useRouter();
+
   return (
-    <Pressable style={styles.addFolderIcon}>
+    <Pressable
+      style={styles.addFolderIcon}
+      onPress={() => router.push("/(app)/new-folder")}
+    >
       <Ionicons name="folder-outline" size={28} color={COLORS.accent} />
       <Entypo
         style={[styles.plusIcon, styles.plus]}

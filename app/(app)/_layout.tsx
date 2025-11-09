@@ -3,6 +3,7 @@ import { COLORS } from "@/theme/color";
 import { Stack, useRouter } from "expo-router";
 import ModifyButton from "../components/Home/ModifyButton";
 import Header from "../components/layout/Header";
+import ConfirmNewFolderButton from "../components/NewFolder/ConfirmNewFolderButton";
 import NewNoteHeaderLeft from "../components/NewNote/NewNoteHeaderLeft";
 import TextButton from "../components/ui/TextButton";
 
@@ -61,9 +62,7 @@ export default function AppLayout() {
                 leftComponent={
                   <TextButton label="Cancel" onPress={() => router.back()} />
                 }
-                rightComponent={
-                  <TextButton label="OK" onPress={() => router.back()} />
-                }
+                rightComponent={<ConfirmNewFolderButton />}
               />
             );
           },

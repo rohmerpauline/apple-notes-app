@@ -1,6 +1,7 @@
 import { useScreenHeaderTitle } from "@/hook/useScreenHeaderTitle";
 import { useFolders } from "@/lib/queries";
 import { useBoundStore } from "@/store/useBoundStore";
+import { useEffect } from "react";
 import { FlatList, StyleSheet } from "react-native";
 import { FooterFunctionalityOptions } from "../components/layout//Footer";
 import ScreenWrapper from "../components/layout/ScreenWrapper";
@@ -14,8 +15,13 @@ const FOOTER_ITEMS = [
 
 const HomeScreen = () => {
   const { scrollProps, canScrollFurther } = useScreenHeaderTitle("Folders");
+  const setFolders = useBoundStore((state) => state.setFolders);
   const user = useBoundStore((state) => state.user);
   const { data: folders = [] } = useFolders(user?.$id ?? "");
+
+  useEffect(() => {
+    setFolders(folders);
+  }, [folders, setFolders]);
 
   if (folders.length === 0) return;
 

@@ -8,6 +8,7 @@ interface HeaderProps {
   leftComponent?: React.ReactNode;
   rightComponent?: React.ReactNode;
   showShadow: boolean;
+  type?: string;
 }
 
 const Header = ({
@@ -15,14 +16,35 @@ const Header = ({
   leftComponent,
   rightComponent,
   showShadow,
+  type = "default",
 }: HeaderProps) => {
   return (
-    <View style={[styles.container, showShadow && styles.headerShadow]}>
-      <View style={styles.left}>{leftComponent}</View>
+    <View
+      style={[
+        styles.container,
+        showShadow && styles.headerShadow,
+        {
+          height: type == "modal" ? 80 : HEADER_HEIGHT,
+          paddingTop: type == "modal" ? 0 : HEADER_PADDING_TOP,
+        },
+      ]}
+    >
+      <View
+        style={[styles.left, { top: type == "modal" ? 0 : HEADER_PADDING_TOP }]}
+      >
+        {leftComponent}
+      </View>
       <View style={styles.center}>
         <Text style={styles.centerTitle}>{title}</Text>
       </View>
-      <View style={styles.right}>{rightComponent}</View>
+      <View
+        style={[
+          styles.right,
+          { top: type == "modal" ? 0 : HEADER_PADDING_TOP },
+        ]}
+      >
+        {rightComponent}
+      </View>
     </View>
   );
 };
@@ -31,8 +53,6 @@ export default Header;
 
 const styles = StyleSheet.create({
   container: {
-    height: HEADER_HEIGHT,
-    paddingTop: HEADER_PADDING_TOP,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -44,14 +64,12 @@ const styles = StyleSheet.create({
   left: {
     position: "absolute",
     left: 20,
-    top: HEADER_PADDING_TOP,
     bottom: 0,
     justifyContent: "center",
   },
   right: {
     position: "absolute",
     right: 20,
-    top: HEADER_PADDING_TOP,
     bottom: 0,
     justifyContent: "center",
   },

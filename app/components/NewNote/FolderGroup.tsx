@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     paddingRight: 10,
   },
   groupName: {
-    fontSize: 22,
+    fontSize: 20,
     fontWeight: "700",
     marginBottom: 10,
   },
