@@ -1,7 +1,7 @@
 import { useBoundStore } from "@/store/useBoundStore";
 import { COLORS } from "@/theme/color";
-import { Pressable, StyleSheet } from "react-native";
-import { Text } from "react-native-paper";
+import { StyleSheet } from "react-native";
+import TextButton from "../ui/TextButton";
 
 const ModifyButton = () => {
   const isModifying = useBoundStore((state) => state.isModifying);
@@ -13,11 +13,7 @@ const ModifyButton = () => {
 
   const buttonLabel = isModifying ? "OK" : "Modify";
 
-  return (
-    <Pressable onPress={handleClick}>
-      <Text style={[styles.label]}>{buttonLabel}</Text>
-    </Pressable>
-  );
+  return <TextButton label={buttonLabel} onPress={handleClick} />;
 };
 
 export default ModifyButton;
@@ -28,8 +24,5 @@ const styles = StyleSheet.create({
     fontWeight: "normal",
     color: COLORS.accent,
     textAlign: "right",
-  },
-  pressed: {
-    color: COLORS.border,
   },
 });

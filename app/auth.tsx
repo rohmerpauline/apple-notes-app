@@ -1,3 +1,13 @@
+import {
+  ALL_NOTES_FOLDER_ID,
+  ALL_NOTES_TITLE,
+  DEFAULT_FOLDER_TYPE,
+  RECENTLY_DELETED_FOLDER_ID,
+  RECENTLY_DELETED_TITLE,
+  UNASSIGNED_NOTES_FOLDER_ID,
+  UNASSIGNED_NOTES_TITLE,
+} from "@/constants/folders";
+import { useCreateFolder } from "@/lib/queries";
 import { useBoundStore } from "@/store/useBoundStore";
 import { COLORS } from "@/theme/color";
 import { useRouter } from "expo-router";
@@ -14,6 +24,7 @@ const AuthScreen = () => {
   const [password, setPassword] = useState<string>("");
   const [isSignUp, setIsSignUp] = useState<boolean>(true);
   const [error, setError] = useState<string | null>("");
+  const { mutateAsync: createFolder } = useCreateFolder();
 
   const theme = useTheme();
   const router = useRouter();
@@ -30,11 +41,35 @@ const AuthScreen = () => {
     setError(null);
 
     if (isSignUp) {
-      const error = await signUp(trimmedEmail, trimmedPassword);
-      if (error) {
-        setError(error);
+      const { error, userId } = await signUp(trimmedEmail, trimmedPassword);
+      if (error || !userId) {
+        setError(error || "Failed to get user ID.");
         return;
       }
+
+      await Promise.all([
+        createFolder({
+          userId,
+          title: ALL_NOTES_TITLE,
+          type: DEFAULT_FOLDER_TYPE,
+          isModifiable: false,
+          rowId: ALL_NOTES_FOLDER_ID,
+        }),
+        createFolder({
+          userId,
+          title: UNASSIGNED_NOTES_TITLE,
+          type: DEFAULT_FOLDER_TYPE,
+          isModifiable: false,
+          rowId: UNASSIGNED_NOTES_FOLDER_ID,
+        }),
+        createFolder({
+          userId,
+          title: RECENTLY_DELETED_TITLE,
+          type: DEFAULT_FOLDER_TYPE,
+          isModifiable: false,
+          rowId: RECENTLY_DELETED_FOLDER_ID,
+        }),
+      ]);
     } else {
       const error = await signIn(trimmedEmail, trimmedPassword);
       if (error) {

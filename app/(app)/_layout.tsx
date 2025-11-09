@@ -1,9 +1,10 @@
 import { useBoundStore } from "@/store/useBoundStore";
 import { COLORS } from "@/theme/color";
-import { Stack } from "expo-router";
+import { Stack, useRouter } from "expo-router";
 import ModifyButton from "../components/Home/ModifyButton";
 import Header from "../components/layout/Header";
 import NewNoteHeaderLeft from "../components/NewNote/NewNoteHeaderLeft";
+import TextButton from "../components/ui/TextButton";
 
 export default function AppLayout() {
   const title = useBoundStore((state) => state.title);
@@ -24,7 +25,6 @@ export default function AppLayout() {
       <Stack.Screen
         name="index"
         options={{
-          title: headerTitle,
           header: () => (
             <Header
               title={headerTitle}
@@ -44,6 +44,29 @@ export default function AppLayout() {
               leftComponent={<NewNoteHeaderLeft />}
             />
           ),
+        }}
+      />
+      <Stack.Screen
+        name="new-folder"
+        options={{
+          presentation: "modal",
+          title: "New note",
+          header: () => {
+            const router = useRouter();
+            return (
+              <Header
+                title="New Folder"
+                showShadow={false}
+                type="modal"
+                leftComponent={
+                  <TextButton label="Cancel" onPress={() => router.back()} />
+                }
+                rightComponent={
+                  <TextButton label="OK" onPress={() => router.back()} />
+                }
+              />
+            );
+          },
         }}
       />
     </Stack>

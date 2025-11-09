@@ -1,12 +1,10 @@
+import { RECENTLY_DELETED_FOLDER_ID } from "@/constants/folders";
 import { useBoundStore } from "@/store/useBoundStore";
 import { COLORS } from "@/theme/color";
-import { FolderTable, RECENTLY_DELETED_FOLDER_ID } from "@/types/database.type";
-import {
-  FontAwesome6,
-  Ionicons,
-  MaterialCommunityIcons,
-} from "@expo/vector-icons";
+import { FolderTable } from "@/types/database.type";
+import { FontAwesome6, Ionicons } from "@expo/vector-icons";
 import { Pressable, StyleSheet, Text, View } from "react-native";
+import FolderModifyActions from "./FolderModifyActions";
 
 interface FolderProps {
   folder: FolderTable;
@@ -23,15 +21,15 @@ const Folder = ({ folder }: FolderProps) => {
   const textOpacity = isDisabled ? 0.8 : 1;
 
   const folderIcon =
-    folder.id === RECENTLY_DELETED_FOLDER_ID ? (
-      <Ionicons name="chevron-forward" size={20} color={COLORS.border} />
+    folder.$id !== RECENTLY_DELETED_FOLDER_ID ? (
+      <FontAwesome6 name="folder-closed" size={22} color={iconColor} />
     ) : (
-      <Ionicons name="chevron-forward" size={20} color={COLORS.border} />
+      <Ionicons name="trash-outline" size={22} color={iconColor} />
     );
 
   return (
-    <Pressable style={styles.container}>
-      <FontAwesome6 name="folder-closed" size={22} color={iconColor} />
+    <Pressable style={styles.container} disabled={isDisabled}>
+      {folderIcon}
       <View style={styles.folderContent}>
         <Text
           style={[
@@ -45,28 +43,11 @@ const Folder = ({ folder }: FolderProps) => {
           {folder.title}
         </Text>
         {isModifying ? (
-          isFolderModifiable && (
-            <View style={styles.modifyContainer}>
-              <View style={[styles.iconWrapper, styles.dotsIcon]}>
-                <MaterialCommunityIcons
-                  name="dots-horizontal-circle-outline"
-                  size={24}
-                  color={COLORS.accent}
-                />
-              </View>
-              <View style={styles.iconWrapper}>
-                <Ionicons
-                  name="menu-outline"
-                  size={24}
-                  color={COLORS.lightGrey}
-                />
-              </View>
-            </View>
-          )
+          isFolderModifiable && <FolderModifyActions />
         ) : (
           <View style={styles.rightSide}>
-            <Text style={styles.numberOfNotes}>{folder.noteCount}</Text>
-            {folderIcon}
+            <Text style={styles.numberOfNotes}>{folder.note_count}</Text>
+            <Ionicons name="chevron-forward" size={20} color={COLORS.border} />
           </View>
         )}
       </View>
@@ -101,19 +82,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     paddingVertical: 13,
-  },
-  modifyContainer: {
-    flexDirection: "row",
-    alignItems: "stretch",
-  },
-  iconWrapper: {
-    justifyContent: "center",
-    paddingHorizontal: 5,
-    alignSelf: "stretch",
-  },
-  dotsIcon: {
-    borderRightWidth: StyleSheet.hairlineWidth,
-    borderRightColor: COLORS.lightGrey,
   },
   numberOfNotes: {
     fontSize: 18,

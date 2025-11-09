@@ -1,19 +1,24 @@
 import { useBoundStore } from "@/store/useBoundStore";
 import { COLORS } from "@/theme/color";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { SplashScreen, Stack } from "expo-router";
 import { useEffect } from "react";
 import { PaperProvider } from "react-native-paper";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { SplashScreenController } from "../splash";
 
+const queryClient = new QueryClient();
+
 const Root = () => {
   return (
-    <PaperProvider>
-      <SafeAreaProvider>
-        <SplashScreenController />
-        <RootNavigator />
-      </SafeAreaProvider>
-    </PaperProvider>
+    <QueryClientProvider client={queryClient}>
+      <PaperProvider>
+        <SafeAreaProvider>
+          <SplashScreenController />
+          <RootNavigator />
+        </SafeAreaProvider>
+      </PaperProvider>
+    </QueryClientProvider>
   );
 };
 

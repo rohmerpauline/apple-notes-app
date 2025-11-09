@@ -32,7 +32,7 @@ const FolderGroup = ({ folders }: FolderGroupProps) => {
       {dropDownOpen && (
         <View style={styles.folderContainer}>
           {folders.map((folder) => (
-            <Folder key={folder.id} folder={folder} />
+            <Folder key={folder.$id} folder={folder} />
           ))}
         </View>
       )}

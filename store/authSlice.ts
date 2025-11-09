@@ -8,8 +8,14 @@ export interface AuthState {
   isLoadingUser: boolean;
   setUser: (user: Models.User<Models.Preferences> | null) => void;
   setIsLoadingUser: (isLoadingUser: boolean) => void;
-  getUser: () => Promise<void>;
-  signUp: (email: string, password: string) => Promise<string | null>;
+  getUser: () => Promise<string | null>;
+  signUp: (
+    email: string,
+    password: string,
+  ) => Promise<{
+    userId: string | null;
+    error: string | null;
+  }>;
   signIn: (email: string, password: string) => Promise<string | null>;
   signOut: () => Promise<void>;
 }
@@ -28,10 +34,12 @@ export const createAuthSlice = (
   getUser: async () => {
     set({ isLoadingUser: true });
     try {
-      const session = await account.get();
-      set({ user: session });
+      const user = await account.get();
+      set({ user });
+      return user.$id;
     } catch (error) {
       set({ user: null });
+      return null;
     } finally {
       set({ isLoadingUser: false });
     }
@@ -46,11 +54,14 @@ export const createAuthSlice = (
         password,
       });
       await get().signIn(email, password);
-      await get().getUser();
-      return null;
-    } catch (error) {
-      if (error instanceof Error) return error.message;
-      return "An error occurred during sign up.";
+      const userId = await get().getUser();
+      return { userId, error: null };
+    } catch (err) {
+      const error =
+        err instanceof Error
+          ? err.message
+          : "An error occurred during sign up.";
+      return { userId: null, error };
     }
   },
 
@@ -60,9 +71,12 @@ export const createAuthSlice = (
       await account.createEmailPasswordSession({ email, password });
       await get().getUser();
       return null;
-    } catch (error) {
-      if (error instanceof Error) return error.message;
-      return "An error occurred during sign in.";
+    } catch (err) {
+      const error =
+        err instanceof Error
+          ? err.message
+          : "An error occurred during sign in.";
+      return error;
     }
   },
 
